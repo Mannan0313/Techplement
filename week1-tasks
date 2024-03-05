@@ -1,1 +1,38 @@
+import datetime as dt
+import requests, json
 
+apikey = "3c96cb670a269e1714326d430d71bf6a"
+baseURL = "https://api.openweathermap.org/data/2.5/weather?q="
+cityName = input("Enter Your City Name : ")
+completeURL = baseURL + cityName + "&appid=" + apikey
+
+
+#Method to convert kelvin to Celsius and Fahrenheit
+def kelvinToFarenheit(kelvin):
+    celsius = kelvin - 273.15
+    fahrenheit = celsius * (9 / 5) + 32
+    return celsius, fahrenheit
+
+response = requests.get(completeURL).json()
+
+    try:
+        #retriving data from data list into suitable variables
+        temp_kelvin = response['main']['temp']
+        temp_celsius, temp_fahrenheit = kelvinToFarenheit(temp_kelvin)
+        feels_like_kelvin = response['main']['feels_like']
+        feels_like_celsius, feels_like_fahrenheit = kelvinToFarenheit(feels_like_kelvin)
+        humidity = response['main']['humidity']
+        description = response['weather'][0]['description']
+        sunrise_time = dt.datetime.utcfromtimestamp(response['sys']['sunrise'] + response['timezone'])
+        sunset_time = dt.datetime.utcfromtimestamp(response['sys']['sunset'] + response['timezone'])
+
+
+        print(f"Temperature in {cityName}:{temp_celsius:.2f}C or {temp_fahrenheit:.2f}F")
+        print(f"Temperature in {cityName} feels like: {temp_celsius:.2f}C or {temp_fahrenheit:.2f}F")
+        print(f"Humidity in {cityName} : {humidity}%")
+        print(f"general weather in  {cityName} : {description}")
+        print(f"SunRise in {cityName} at {sunrise_time}")
+        print(f"Sunset in {cityName} at {sunset_time}")
+
+    except:
+        print("Please enter valid city name")
