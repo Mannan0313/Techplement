@@ -1,6 +1,6 @@
 # Techplement
 
-#Software Have usedL pycharm V2023.3.4
+#Software used pycharm V2023.3.4
 
 #Run following command in terminal for required libraries:
 -pip install requests
